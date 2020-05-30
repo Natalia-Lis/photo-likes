@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>
+        Are you sure?
+        </p>
+        YES<input type="radio" value="YES" name="deletion"><br>
+        No, I've changed my mind<input type="radio" value="NO" name="deletion"><br>
+        <input type="submit" value="send">
+    </form>
+{% endblock %}

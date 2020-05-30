@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Twoje dane
+{% endblock %}
+
+
+{% block content %}
+
+    {% for element in user_info %}
+    Twój email: {{element.email}}<br>
+
+    {% if element.username %}
+        Twój nick: {{element.username}}<br>
+    {% endif %}
+
+    {% if element.last_login %}
+        Ostatnie logowanie: {{element.last_login}}<br>
+    {% endif %}
+
+    {% if element.first_name %}
+        Imię: {{element.first_name}}<br>
+    {% endif %}
+
+    {% if element.last_name %}
+        Nazwisko: {{element.last_name}}<br>
+    {% endif %}
+
+    {% if element.date_joined %}
+        Data założenia konta: {{element.date_joined}}<br>
+    {% endif %}
+    <br><br>
+    <a href="{% url "edit-user" %}">ZMIEŃ SWOJE DANE</a><br>
+    <a href="{% url "password" %}">ZMIEŃ HASŁO</a><br>
+    <a href="{% url "delete-user" %}">usuń konto</a>
+    {% endfor %}
+
+{% endblock %}

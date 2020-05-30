@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title> {% block title %} MineApp! {% endblock %} </title>
+    </head>
+    <body>
+
+        {% block header %}
+        <div class="container">
+            <center>
+            <h3>{{zalogowany.email}}
+
+        <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;
+        <a href=""#"">Twoje tweety</a>&nbsp;&nbsp;
+        <a href=""#"">Twoje wiadomości</a>&nbsp;
+        <a href=""#"">Wszyscy użytkownicy</a>&nbsp;
+        <br>
+        <a href=""#"">Napisz tweet!</a>&nbsp;&nbsp;
+        <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;
+        <a href="{% url 'login' %}">Zaloguj</a>&nbsp;&nbsp;
+        <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
+        <a href="{% url 'signup' %}">Załóż konto</a>
+
+      </div></h3></center>
+        {% endblock %}
+
+        {% block content %}
+
+    <table border="1">
+         <tr>
+            <th>Wszystkie tweety: &nbsp;&nbsp; </th>
+            <th>Utworzony: &nbsp;&nbsp;</th>
+            <th>Autor:</th>
+        </tr>
+     {% for elem in tweets %}<br>
+         <tr>
+             <td><a href=""#"">"{{ elem.content }}" &nbsp; </a></td>
+            <td>{{ elem.creation_date }} &nbsp;</td>
+            <td> <a href=""#"">{{ elem.foreign }}</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+
+        {% endblock %}
+
+        {% block footer %}
+            <br><br>
+            <p style="text-align:right"> {{now}}&nbsp;&nbsp;&nbsp;</p>
+        {% endblock %}
+    </body>
+</html>

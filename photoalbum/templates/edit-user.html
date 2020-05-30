@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Edycja użytkownika
+{% endblock %}
+
+
+
+{% block content %}
+    <br><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="send">
+    </form>
+
+    {% for element in user_info %}
+        <br>
+        {{element}}<br>
+        {{element.email}}<br>
+        {{element.username}}<br>
+    {% endfor %}
+
+{% endblock %}
