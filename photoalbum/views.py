@@ -3,10 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.views.generic import CreateView
 from .models import Photo, Comment
 from .forms import *
-
-# Create your views here.
 from django.views import View
 
 
@@ -14,7 +13,8 @@ class IndexView(View): #główna
     def get(self, request):
         photos = Photo.objects.all().order_by('-creation_date')
         users = User.objects.all()
-        return render(request, 'base.html', {"photos":photos, "users":users})
+        len_of = len(photos)
+        return render(request, 'base.html', {"photos":photos, "users":users, "len_of":len_of})
 
 
 
@@ -52,13 +52,14 @@ class LogoutView(View): #wylog.
         return redirect('login')
 
 
-class AddUser(View): #dodaj użytk.
+class AddUser(View): #add
     def get(self, request):
         form = AddUserForm()
         return render(request, 'add-user.html', {'form': form})
 
     def post(self, request):
         form = AddUserForm(request.POST)
+        made_mistake = 'Pojawił się błąd - popraw dane'
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -83,9 +84,11 @@ class AddUser(View): #dodaj użytk.
                     return redirect('index')
                 else:
                     return render(request, 'add-user.html', {"haslo":haslo, 'form': form})
+        else:
+            return render(request, 'add-user.html', {"made_mistake":made_mistake, 'form': form})
 
 
-class EditUserView(View): #edycja
+class EditUserView(View): #edit
     def get(self, request):
         user = self.request.user
         user_to_change = User.objects.get(email=user.email)
@@ -103,7 +106,7 @@ class EditUserView(View): #edycja
             return redirect('show-user')
 
 
-class PasswordView(View): #zmiana h.
+class PasswordView(View): #change password
     def get(self, request):
         user = self.request.user
         user_to_change = User.objects.get(email=user.email)
@@ -146,9 +149,142 @@ class DeleteUser(View): #deletion
 
 
 
+#
 
 
 
+class DetailsView(View): #photo details, comments & votes
+    def get(self, request, id):
+        user = self.request.user
+        form = AddCommentToPhotoForm()
+        komentarze = Comment.objects.all().filter(about_id=id)
+        users = User.objects.all()
+        this_photo = Photo.objects.get(pk=id)
+        z_vote = Vote.objects.all().filter(voting_photo_id=id).filter(voting_user=user.id)
+        moj_if = Vote.objects.all().filter(voting_photo_id=id).filter(voting_user=user.id).exists()
+        return render(request, 'photo-details.html', {
+            'form': form,
+            "komentarze": komentarze,
+            "users": users,
+            "this_photo": this_photo,
+            "z_vote":z_vote,
+            "user":user,
+            "moj_if": moj_if,
+        })
+    def post(self, request, id):
+        form = AddCommentToPhotoForm(request.POST)
+        user = self.request.user
+        komentarze = Comment.objects.all().filter(about_id=id)
+        done = "Wykonano!"
+        users = User.objects.all()
+
+        photo_id = request.POST.get('photo_id') #
+        like_or = request.POST.get('like')
+
+        this_photo = Photo.objects.get(pk=id)
+        moj_if = Vote.objects.filter(voting_user=user.id).exists()
+        z_vote = Vote.objects.all().filter(voting_photo_id=id).filter(voting_user=user.id)
+
+        if like_or == 'Polub to zdjęcie!':
+            this_photo.votes += 1
+            this_photo.save()
+            if z_vote.exists():
+                v1=Vote.objects.get(voting_photo_id=id)
+                v1.like=True
+                v1.save()
+            else:
+                v1=Vote(voting_photo_id=id)
+                v1.like=True
+                v1.save()
+                v1.voting_user.add(user)
+                v1.save()
+            # return render(request, 'photo-details.html', {
+            #     'form': form,
+            #     "komentarze": komentarze,
+            #     "done": done,
+            #     "users": users,
+            #     "this_photo":this_photo,
+            #     "z_vote":z_vote,
+            #     "user":user,
+            #     "moj_if":moj_if,
+            # })
+            return redirect('photo-details', this_photo.id)
+
+        elif like_or == 'Pokaż, że Ci się nie podoba':
+            this_photo.votes -= 1
+            this_photo.save()
+            if z_vote.exists():
+                v1=Vote.objects.get(voting_photo_id=id)
+                v1.like=False
+                v1.save()
+            else:
+                v1=Vote(voting_photo_id=id)
+                v1.like=False
+                v1.save()
+                v1.voting_user.add(user)
+                v1.save()
+            # return render(request, 'photo-details.html', {
+            #     'form': form,
+            #     "komentarze": komentarze,
+            #     "done": done,
+            #     "users": users,
+            #     "this_photo": this_photo,
+            #     "z_vote": z_vote,
+            #     "user": user,
+            #     "moj_if": moj_if,
+            # })
+            return redirect('photo-details', this_photo.id)
+
+        if form.is_valid():
+            comment = form.cleaned_data['comment']
+            komentarz = Comment.objects.create(comment=comment, about_id=this_photo.id, author=user)
+            # return render(request, 'photo-details.html', {
+            #     'form': form,
+            #     "komentarze":komentarze,
+            #     "this_photo":this_photo,
+            #     "done": done,
+            #     "users": users,
+            #     "z_vote":z_vote,
+            #     "user": user,
+            #     "moj_if": moj_if,
+            # })
+            return redirect('photo-details', this_photo.id)
+
+
+class AddPhotoView(CreateView): #add img
+    model = Photo
+    fields = ['path']
+    def form_valid(self, form):
+        user = self.request.user
+        path = form.cleaned_data.get('path')
+        create_ph = Photo.objects.create(path=path, photo=user)
+        Vote.objects.create(voting_photo_id=create_ph.id)
+        return redirect('/')
+
+
+class UserPhotoView(View): #szczegóły z
+    def get(self, request):
+        user = self.request.user
+        user_photos = Photo.objects.all().filter(photo_id=user.id)
+        return render(request, 'user-photos.html', {"user_photos":user_photos})
+
+
+class UserIdShowView(View): #received user
+    def get(self, request,id):
+        this_user_photos = Photo.objects.all().filter(photo=id)
+        this_user = User.objects.get(id=id)
+
+        return render(request, 'this-user.html', {
+            "this_user":this_user,
+            "this_user_photos":this_user_photos,
+}
+            )
+
+
+class AllUserView(View): #all -list
+    def get(self, request):
+        all = User.objects.all()
+        return render(request, 'all-users.html', {"all":all})
 
 
 

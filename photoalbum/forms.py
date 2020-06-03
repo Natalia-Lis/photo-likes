@@ -25,4 +25,6 @@ class PasswordViewForm(forms.Form):
     password2 = forms.CharField(label='Powtórz hasło ', widget=forms.PasswordInput)
 
 
+class AddCommentToPhotoForm(forms.Form):
+    comment = forms.CharField(label="Dopisz komentarz do tego zdjęcia", max_length=256)
 

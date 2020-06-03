@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    Zdjęcia użytkownika {{zalogowany.username}}  :
+    <br><br>
+        <table border="1"><tr>
+        {% for el in user_photos%}
+        <td>
+        <a href="/photo-details/{{el.id}}"><img src="{{ el.path }}" width="170" height="170"></a></td>
+        <td>
+        {{ el.creation_date }} </td>
+            <td>{{ el.votes }} likes
+            </td></tr>
+
+        {% endfor %}
+        </table>
+    <br>
+
+
+{% endblock %}

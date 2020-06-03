@@ -1,32 +1,39 @@
+{% load static %}
+
 <!doctype html>
 <html>
     <head>
         <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1">
         <title> {% block title %} MineApp! {% endblock %} </title>
+        <link rel="stylesheet" href="{% static 'style.css' %}">
     </head>
+
     <body>
-
         {% block header %}
-        <div class="container">
-            <center>
-            <h3>{{zalogowany.email}}
 
-        <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;
-        <a href="{% url 'user-tweets' %}">Twoje tweety</a>&nbsp;&nbsp;
-        <a href="{% url 'messages' %}">Twoje wiadomości</a>&nbsp;
-        <a href="{% url 'all-users' %}">Wszyscy użytkownicy</a>&nbsp;
-        <br>
-        <a href="{% url 'add-tweet' %}">Napisz tweet!</a>&nbsp;&nbsp;
-        <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;
-        <a href="{% url 'login' %}">Zaloguj</a>&nbsp;&nbsp;
-        <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
-        <a href="{% url 'signup' %}">Załóż konto</a>
-
-      </div></h3></center>
         {% endblock %}
 
         {% block content %}
+         <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+<!--        <div class="sidenav">-->
+            <aside>
+    {{zalogowany.email}}        <br>
+            <center>
+        <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;
+        <a href=""#"">Twoje tweety</a>&nbsp;&nbsp;
+        <a href=""#"">Twoje wiadomości</a>&nbsp;
+        <a href=""#"">Wszyscy użytkownicy</a>&nbsp;
+ <br> <br> <br> <br> <br> <br> <br> <br>
+        <a href=""#"">Napisz tweet!</a>&nbsp;&nbsp;
+        <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;
+        <a href="{% url 'login' %}">Zaloguj</a>&nbsp;&nbsp;
+        <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
+        <a href="{% url 'signup' %}">Załóż konto</a></center>
+            </aside>
+<!--</div>-->
 
+<div class="main">
     <table border="1">
          <tr>
             <th>Wszystkie tweety: &nbsp;&nbsp; </th>
@@ -35,12 +42,13 @@
         </tr>
      {% for elem in tweets %}<br>
          <tr>
-             <td><a href="tweet-datails/{{elem.id}}/">"{{ elem.content }}" &nbsp; </a></td>
+             <td><a href=""#"">"{{ elem.content }}" &nbsp; </a></td>
             <td>{{ elem.creation_date }} &nbsp;</td>
-            <td> <a href="user/{{elem.foreign.id}}/">{{ elem.foreign }}</a></td>
+            <td> <a href=""#"">{{ elem.foreign }}</a></td>
         </tr>
     {% endfor %}
     </table>
+</div>
 
         {% endblock %}
 

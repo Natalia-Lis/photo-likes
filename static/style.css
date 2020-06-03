@@ -2,12 +2,47 @@ body {
     background-image: url(bg.jpg);
     background-color: antiquewhite;
     background-size: cover;
-    color: black;
+    color: darkblue;
     font-family: Monospaced;
+    margin-right: 20px;
+
 }
 
 a, a:hover, a:visited {
     color: cornflowerblue;
     text-decoration: none;
+}
+
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+  color: cornflowerblue;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 22px;
+  color: cornflowerblue;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: darkblue;
+}
+
+.main {
+  margin-left: 200px;
+  margin-right: 20px;
+  font-size: 18px;
+  padding: 0px 10px;
+
 }
 

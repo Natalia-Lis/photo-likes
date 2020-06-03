@@ -23,14 +23,21 @@ urlpatterns = [
 
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('add-user/', AddUser.as_view(), name='add-user'),
     path('delete-user/', DeleteUser.as_view(), name='delete-user'),
-
     path('edit-user/', EditUserView.as_view(), name='edit-user'),
     path('show-user/', ShowUserView.as_view(), name='show-user'),
-
     path('password/', PasswordView.as_view(), name='password'),
     path('password-changed/', PasswordChangedView.as_view(), name='password-changed'),
     path('add-user/', AddUser.as_view(), name='signup'),
+
+    path('add-photo/', AddPhotoView.as_view(), name='add-photo'),
+    path('user-photos/', UserPhotoView.as_view(), name='user-photos'),
+    path('photo-details/<int:id>/', DetailsView.as_view(), name='photo-details'),
+    path('user/<int:id>/', UserIdShowView.as_view(), name='user-id'),
+    path('show-user/', ShowUserView.as_view(), name='show-user'),
+    path('all-users/', AllUserView.as_view(), name='all-users'),
+
+
+
 
 ]

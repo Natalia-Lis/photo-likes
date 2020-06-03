@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+<center>
+        <img src="{{ this_photo.path }}" width="650" height="450">
+        
+        <br>
+    {{ this_photo.creation_date }} <br>
+        {{ this_photo.photo }}</center>
+
+    <br><br>{{ this_photo.votes }}<br>
+
+
+<br>
+{% if moj_if == False %}
+    Zagłosuj!
+          <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="photo_id" value={{ photo.id }}>
+                    <input type="submit" name="like" value="Polub to zdjęcie!">
+                    <input type="submit" name="like" value="Pokaż, że Ci się nie podoba">
+                </form>
+    {% endif %}
+{% if moj_if == True %}
+{% for ell in z_vote %}
+    {% if ell.like == True %}
+                Lubisz to zdjęcie
+                  <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="photo_id" value={{ photo.id }}>
+
+                    <input type="submit" name="like" value="Pokaż, że Ci się nie podoba">
+                </form>
+  {% endif %}
+
+    {% if ell.like == False %}
+                Nie lubisz tego zdjęcia
+                  <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="photo_id" value={{ photo.id }}>
+                    <input type="submit" name="like" value="Polub to zdjęcie!">
+
+                </form>
+  {% endif %}
+    {%  endfor %}
+
+      {% endif %}
+    <br><br>
+
+        {{done}}
+
+        <br><br><br>
+            KOMENTARZE:<br>
+            {% for el in komentarze %}
+            {{ forloop.counter }}.
+            "{{el.comment}}" -
+            {% for element in users %}
+            {% if el.author_id == element.id %}
+            {{element.username}}
+            {% endif %}
+            {% endfor %}<br>
+            {% endfor %}
+
+        <br>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" value="send">
+            </form>
+
+{% endblock %}

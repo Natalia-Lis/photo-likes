@@ -4,53 +4,70 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1">
         <title> {% block title %} MineApp! {% endblock %} </title>
-        <link rel="stylesheet" href="{% static 'style.css' %}"}>
-
+        <link rel="stylesheet" href="{% static 'style.css' %}">
     </head>
-    <body>
 
-        {% block header %}
-        <div class="container">
+    <body>
+        {% block sidebar %}
+
+        <div class="sidenav">
+
             <center>
-            <h3>{{zalogowany.email}}
+            {{zalogowany.email}}   <br>
+                    {{now}}
+                <br>
+                <br><br><br>
+
 
         <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;
-        <a href=""#"">Twoje tweety</a>&nbsp;&nbsp;
-        <a href=""#"">Twoje wiadomości</a>&nbsp;
-        <a href=""#"">Wszyscy użytkownicy</a>&nbsp;
-        <br>
-        <a href=""#"">Napisz tweet!</a>&nbsp;&nbsp;
-        <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;
+        <a href="{% url 'user-photos' %}">Twoje zdjęcia</a>&nbsp;&nbsp;
+<br><br><br>
+
+            <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;
+        <a href="{% url 'all-users' %}">Wszyscy użytkownicy</a>&nbsp;
+        <a href="{% url 'add-photo' %}">Dodaj zdjęcie!</a>&nbsp;&nbsp;
+<br>
+<br><br>
         <a href="{% url 'login' %}">Zaloguj</a>&nbsp;&nbsp;
         <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
-        <a href="{% url 'signup' %}">Załóż konto</a>
-
-      </div></h3></center>
-        {% endblock %}
-
+        <a href="{% url 'signup' %}">Załóż konto</a></center>
+</div>
+                {% endblock %}
+<div class="main">
         {% block content %}
 
-    <table border="1">
-         <tr>
-            <th>Wszystkie tweety: &nbsp;&nbsp; </th>
-            <th>Utworzony: &nbsp;&nbsp;</th>
-            <th>Autor:</th>
-        </tr>
-     {% for elem in tweets %}<br>
-         <tr>
-             <td><a href=""#"">"{{ elem.content }}" &nbsp; </a></td>
-            <td>{{ elem.creation_date }} &nbsp;</td>
-            <td> <a href=""#"">{{ elem.foreign }}</a></td>
-        </tr>
-    {% endfor %}
-    </table>
+
+Wszystkie zdjęcia ({{ len_of }}):<br>
+
+
+ {% for elem in photos %}
+       &nbsp;&nbsp;<table border="1" style="float: left" width="205" height="205">
+
+<tr>
+    <td>
+<center>
+<a href="photo-details/{{elem.id}}/">
+    <img src="{{ elem.path }}" width="170" height="170" style="float:right; margin:6px;" />
+</a><br>
+
+{{ elem.creation_date }}<br>
+<a href="user/{{elem.photo.id}}/">{{ elem.photo }}</a>
+</center>
+     </td>
+
+</tr>
+
+    </table>&nbsp;&nbsp;
+{% endfor %}
 
         {% endblock %}
+</div>
+<!--        {% block footer %}-->
+<!--            <br><br>-->
+<!--            <p style="text-align:right"> {{now}}&nbsp;&nbsp;&nbsp;</p>-->
+<!--        {% endblock %}-->
 
-        {% block footer %}
-            <br><br>
-            <p style="text-align:right"> {{now}}&nbsp;&nbsp;&nbsp;</p>
-        {% endblock %}
     </body>
 </html>
