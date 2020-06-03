@@ -28,3 +28,9 @@ class PasswordViewForm(forms.Form):
 class AddCommentToPhotoForm(forms.Form):
     comment = forms.CharField(label="Dopisz komentarz do tego zdjęcia", max_length=256)
 
+
+class AddPhotoOnMainSiteForm(forms.ModelForm):
+    class Meta:
+        model = Photo
+        fields = ['path']
+

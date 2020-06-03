@@ -11,11 +11,18 @@ from django.views import View
 
 class IndexView(View): #główna
     def get(self, request):
+        form = AddPhotoOnMainSiteForm()
         photos = Photo.objects.all().order_by('-creation_date')
         users = User.objects.all()
         len_of = len(photos)
-        return render(request, 'base.html', {"photos":photos, "users":users, "len_of":len_of})
-
+        return render(request, 'base.html', {"photos":photos, "users":users, "len_of":len_of, "form":form})
+    def post(self, request):
+        form = AddPhotoOnMainSiteForm(request.POST)
+        user = self.request.user
+        if form.is_valid():
+            path = form.cleaned_data['path']
+            Photo.objects.create(path=path, photo_id=user.id)
+            return redirect('/')
 
 
 class ShowUserView(View): #user zalog. info
@@ -23,7 +30,6 @@ class ShowUserView(View): #user zalog. info
         user = self.request.user
         user_info = User.objects.all().filter(email=user.email)
         return render(request, 'show-user.html', {"user_info":user_info})
-
 
 
 class LoginView(View): #logow.
@@ -148,16 +154,13 @@ class DeleteUser(View): #deletion
                 return redirect('show-user')
 
 
-
 #
-
-
 
 class DetailsView(View): #photo details, comments & votes
     def get(self, request, id):
         user = self.request.user
         form = AddCommentToPhotoForm()
-        komentarze = Comment.objects.all().filter(about_id=id)
+        komentarze = Comment.objects.all().filter(about_id=id).order_by('when')
         users = User.objects.all()
         this_photo = Photo.objects.get(pk=id)
         z_vote = Vote.objects.all().filter(voting_photo_id=id).filter(voting_user=user.id)

@@ -31,6 +31,7 @@ urlpatterns = [
     path('add-user/', AddUser.as_view(), name='signup'),
 
     path('add-photo/', AddPhotoView.as_view(), name='add-photo'),
+    path('', AddPhotoView.as_view(), name='add-ph'),
     path('user-photos/', UserPhotoView.as_view(), name='user-photos'),
     path('photo-details/<int:id>/', DetailsView.as_view(), name='photo-details'),
     path('user/<int:id>/', UserIdShowView.as_view(), name='user-id'),

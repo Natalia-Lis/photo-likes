@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Photo(models.Model):
     votes = models.IntegerField(default=0)
-    path = models.CharField(max_length=128)
+    path = models.CharField(max_length=128, verbose_name='Podaj ścieżkę nowego zdjęcia: ')
     creation_date = models.DateTimeField(auto_now=True)
     photo = models.ForeignKey(User, on_delete=models.CASCADE)
 

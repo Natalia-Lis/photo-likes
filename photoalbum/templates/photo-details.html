@@ -55,8 +55,8 @@
         <br><br><br>
             KOMENTARZE:<br>
             {% for el in komentarze %}
-            {{ forloop.counter }}.
-            "{{el.comment}}" -
+
+            - "{{el.comment}}" -
             {% for element in users %}
             {% if el.author_id == element.id %}
             {{element.username}}
