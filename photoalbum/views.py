@@ -9,7 +9,7 @@ from .forms import *
 from django.views import View
 
 
-class IndexView(View): #główna
+class IndexView(LoginRequiredMixin, View): #główna
     def get(self, request):
         form = AddPhotoOnMainSiteForm()
         photos = Photo.objects.all().order_by('-creation_date')
@@ -25,7 +25,7 @@ class IndexView(View): #główna
             return redirect('/')
 
 
-class ShowUserView(View): #user zalog. info
+class ShowUserView(LoginRequiredMixin, View): #user zalog. info
     def get(self, request):
         user = self.request.user
         user_info = User.objects.all().filter(email=user.email)
@@ -52,7 +52,7 @@ class LoginView(View): #logow.
             return redirect('login')
 
 
-class LogoutView(View): #wylog.
+class LogoutView(LoginRequiredMixin, View): #wylog.
     def get(self, request):
         logout(request)
         return redirect('login')
@@ -94,7 +94,7 @@ class AddUser(View): #add
             return render(request, 'add-user.html', {"made_mistake":made_mistake, 'form': form})
 
 
-class EditUserView(View): #edit
+class EditUserView(LoginRequiredMixin, View): #edit
     def get(self, request):
         user = self.request.user
         user_to_change = User.objects.get(email=user.email)
@@ -112,7 +112,7 @@ class EditUserView(View): #edit
             return redirect('show-user')
 
 
-class PasswordView(View): #change password
+class PasswordView(LoginRequiredMixin, View): #change password
     def get(self, request):
         user = self.request.user
         user_to_change = User.objects.get(email=user.email)
@@ -139,7 +139,7 @@ class PasswordChangedView(View): #pass changed, needed login
         return render(request, 'test.html', {"changed":changed})
 
 
-class DeleteUser(View): #deletion
+class DeleteUser(LoginRequiredMixin, View): #deletion
     def get(self, request):
         user = self.request.user
         return render(request, 'user_confirm_delete.html', {"user":user})
@@ -156,7 +156,7 @@ class DeleteUser(View): #deletion
 
 #
 
-class DetailsView(View): #photo details, comments & votes
+class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
     def get(self, request, id):
         user = self.request.user
         form = AddCommentToPhotoForm()
@@ -254,7 +254,7 @@ class DetailsView(View): #photo details, comments & votes
             return redirect('photo-details', this_photo.id)
 
 
-class AddPhotoView(CreateView): #add img
+class AddPhotoView(LoginRequiredMixin, CreateView): #add img
     model = Photo
     fields = ['path']
     def form_valid(self, form):
@@ -265,14 +265,14 @@ class AddPhotoView(CreateView): #add img
         return redirect('/')
 
 
-class UserPhotoView(View): #szczegóły z
+class UserPhotoView(LoginRequiredMixin, View): #szczegóły z
     def get(self, request):
         user = self.request.user
         user_photos = Photo.objects.all().filter(photo_id=user.id)
         return render(request, 'user-photos.html', {"user_photos":user_photos})
 
 
-class UserIdShowView(View): #received user
+class UserIdShowView(LoginRequiredMixin, View): #received user
     def get(self, request,id):
         this_user_photos = Photo.objects.all().filter(photo=id)
         this_user = User.objects.get(id=id)
@@ -284,7 +284,7 @@ class UserIdShowView(View): #received user
             )
 
 
-class AllUserView(View): #all -list
+class AllUserView(LoginRequiredMixin, View): #all -list
     def get(self, request):
         all = User.objects.all()
         return render(request, 'all-users.html', {"all":all})
