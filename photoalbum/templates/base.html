@@ -10,33 +10,25 @@
     </head>
 
     <body>
-        {% block sidebar %}
+    {% block sidebar %}
 
         <div class="sidenav">
-
             <center>
             {{zalogowany.email}}   <br>
-                    {{now}}
-                <br>
-                <br><br><br>
-
+            {{now}}
+            <br><br><br><br>
             <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;
-
-        <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;
-        <a href="{% url 'user-photos' %}">Twoje zdjęcia</a>&nbsp;&nbsp;
-
-
-        <a href="{% url 'add-photo' %}">Dodaj zdjęcie!</a>&nbsp;&nbsp;
-        <a href="{% url 'all-users' %}">Wszyscy użytkownicy</a>&nbsp;
-
-<br>
-<br><br>
-        <a href="{% url 'login' %}">Zaloguj</a>&nbsp;&nbsp;
-        <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
-        <a href="{% url 'signup' %}">Załóż konto</a></center>
-</div>
+            <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;
+            <a href="{% url 'user-photos' %}">Twoje zdjęcia</a>&nbsp;&nbsp;
+            <a href="{% url 'add-photo' %}">Dodaj zdjęcie!</a>&nbsp;&nbsp;
+            <a href="{% url 'all-users' %}">Wszyscy użytkownicy</a>&nbsp;
+            <br><br><br>
+            <a href="{% url 'login' %}">Zaloguj</a>&nbsp;&nbsp;
+            <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
+            <a href="{% url 'signup' %}">Załóż konto</a></center>
+        </div>
                 {% endblock %}
-<div class="main">
+    <div class="main">
         {% block content %}
 
 
@@ -47,35 +39,26 @@
     </form>
 
             <br>
-Wszystkie zdjęcia ({{ len_of }}):<br>
+    Wszystkie zdjęcia ({{ len_of }}):<br>
 
-
- {% for elem in photos %}
-       &nbsp;&nbsp;<table border="1" style="float: left" width="205" height="205">
-
-<tr>
-    <td>
-<center>
-<a href="photo-details/{{elem.id}}/">
-    <img src="{{ elem.path }}" width="170" height="170" style="float:right; margin:6px;" />
-</a><br>
-
-{{ elem.creation_date }}<br>
-<a href="user/{{elem.photo.id}}/">{{ elem.photo }}</a>
-</center>
-     </td>
-
-</tr>
-
-    </table>&nbsp;&nbsp;
+    {% for elem in photos %}
+       &nbsp;<table border="1" style="float: left" width="205" height="205">
+        <tr>
+            <td>
+            <center>
+            <a href="photo-details/{{elem.id}}/">
+                <img src="{{ elem.path }}" width="170" height="170" style="float:right; margin:6px;" />
+            </a><br>
+            {{ elem.creation_date }}<br>
+            <a href="user/{{elem.photo.id}}/">{{ elem.photo }}</a>
+            </center>
+             </td>
+        </tr>
+        </table>&nbsp;
 {% endfor %}
 
         {% endblock %}
 </div>
-<!--        {% block footer %}-->
-<!--            <br><br>-->
-<!--            <p style="text-align:right"> {{now}}&nbsp;&nbsp;&nbsp;</p>-->
-<!--        {% endblock %}-->
 
     </body>
 </html>

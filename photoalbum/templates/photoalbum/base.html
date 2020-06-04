@@ -10,51 +10,55 @@
     </head>
 
     <body>
-        {% block header %}
+    {% block sidebar %}
+
+        <div class="sidenav">
+            <center>
+            {{zalogowany.email}}   <br>
+            {{now}}
+            <br><br><br><br>
+            <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;
+            <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;
+            <a href="{% url 'user-photos' %}">Twoje zdjęcia</a>&nbsp;&nbsp;
+            <a href="{% url 'add-photo' %}">Dodaj zdjęcie!</a>&nbsp;&nbsp;
+            <a href="{% url 'all-users' %}">Wszyscy użytkownicy</a>&nbsp;
+            <br><br><br>
+            <a href="{% url 'login' %}">Zaloguj</a>&nbsp;&nbsp;
+            <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
+            <a href="{% url 'signup' %}">Załóż konto</a></center>
+        </div>
+                {% endblock %}
+    <div class="main">
+        {% block content %}
+
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="send">
+    </form>
+
+            <br>
+    Wszystkie zdjęcia ({{ len_of }}):<br>
+
+    {% for elem in photos %}
+       &nbsp;<table border="1" style="float: left" width="205" height="205">
+        <tr>
+            <td>
+            <center>
+            <a href="photo-details/{{elem.id}}/">
+                <img src="{{ elem.path }}" width="170" height="170" style="float:right; margin:6px;" />
+            </a><br>
+            {{ elem.creation_date }}<br>
+            <a href="user/{{elem.photo.id}}/">{{ elem.photo }}</a>
+            </center>
+             </td>
+        </tr>
+        </table>&nbsp;
+{% endfor %}
 
         {% endblock %}
-
-        {% block content %}
-         <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
-<!--        <div class="sidenav">-->
-            <aside>
-    {{zalogowany.email}}        <br>
-            <center>
-        <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;
-        <a href=""#"">Twoje tweety</a>&nbsp;&nbsp;
-        <a href=""#"">Twoje wiadomości</a>&nbsp;
-        <a href=""#"">Wszyscy użytkownicy</a>&nbsp;
- <br> <br> <br> <br> <br> <br> <br> <br>
-        <a href=""#"">Napisz tweet!</a>&nbsp;&nbsp;
-        <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;
-        <a href="{% url 'login' %}">Zaloguj</a>&nbsp;&nbsp;
-        <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
-        <a href="{% url 'signup' %}">Załóż konto</a></center>
-            </aside>
-<!--</div>-->
-
-<div class="main">
-    <table border="1">
-         <tr>
-            <th>Wszystkie tweety: &nbsp;&nbsp; </th>
-            <th>Utworzony: &nbsp;&nbsp;</th>
-            <th>Autor:</th>
-        </tr>
-     {% for elem in tweets %}<br>
-         <tr>
-             <td><a href=""#"">"{{ elem.content }}" &nbsp; </a></td>
-            <td>{{ elem.creation_date }} &nbsp;</td>
-            <td> <a href=""#"">{{ elem.foreign }}</a></td>
-        </tr>
-    {% endfor %}
-    </table>
 </div>
 
-        {% endblock %}
-
-        {% block footer %}
-            <br><br>
-            <p style="text-align:right"> {{now}}&nbsp;&nbsp;&nbsp;</p>
-        {% endblock %}
     </body>
 </html>

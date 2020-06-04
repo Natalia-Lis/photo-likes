@@ -1,21 +1,16 @@
 {% extends "base.html" %}
 
 
-
 {% block content %}
-<table border="1">
-<tr>
-   {% for el in all %}
-<td><a href="/user/{{el.id}}/">
-    {{ el.username }}&nbsp;</a></td>
-    <td>
-</td>
-     </tr>
-    {% endfor %}
-
-</table>
-<br>
-
-
+    <table border="1">
+        <tr>
+       {% for el in all %}
+        <td><a href="/user/{{el.id}}/">
+            {{ el.username }}&nbsp;</a></td>
+            <td></td>
+         </tr>
+        {% endfor %}
+    </table>
+    <br>
 
 {% endblock %}
