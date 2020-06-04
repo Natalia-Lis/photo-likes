@@ -10,8 +10,6 @@ class Photo(models.Model):
     photo = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-
-
 class Comment(models.Model):
     comment = models.TextField()
     when = models.DateTimeField(auto_now=True)

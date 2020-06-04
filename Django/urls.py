@@ -20,7 +20,6 @@ from photoalbum.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
-
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('delete-user/', DeleteUser.as_view(), name='delete-user'),
@@ -29,7 +28,6 @@ urlpatterns = [
     path('password/', PasswordView.as_view(), name='password'),
     path('password-changed/', PasswordChangedView.as_view(), name='password-changed'),
     path('add-user/', AddUser.as_view(), name='signup'),
-
     path('add-photo/', AddPhotoView.as_view(), name='add-photo'),
     path('', AddPhotoView.as_view(), name='add-ph'),
     path('user-photos/', UserPhotoView.as_view(), name='user-photos'),
@@ -37,8 +35,4 @@ urlpatterns = [
     path('user/<int:id>/', UserIdShowView.as_view(), name='user-id'),
     path('show-user/', ShowUserView.as_view(), name='show-user'),
     path('all-users/', AllUserView.as_view(), name='all-users'),
-
-
-
-
 ]

@@ -4,12 +4,12 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
-from .models import Photo, Comment
+from .models import Photo, Comment, Vote
 from .forms import *
 from django.views import View
 
 
-class IndexView(LoginRequiredMixin, View): #główna
+class IndexView(LoginRequiredMixin, View): #main
     def get(self, request):
         form = AddPhotoOnMainSiteForm()
         photos = Photo.objects.all().order_by('-creation_date')
@@ -154,8 +154,6 @@ class DeleteUser(LoginRequiredMixin, View): #deletion
                 return redirect('show-user')
 
 
-#
-
 class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
     def get(self, request, id):
         user = self.request.user
@@ -181,7 +179,7 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
         done = "Wykonano!"
         users = User.objects.all()
 
-        photo_id = request.POST.get('photo_id') #
+        photo_id = request.POST.get('photo_id')
         like_or = request.POST.get('like')
 
         this_photo = Photo.objects.get(pk=id)
@@ -280,15 +278,11 @@ class UserIdShowView(LoginRequiredMixin, View): #received user
         return render(request, 'this-user.html', {
             "this_user":this_user,
             "this_user_photos":this_user_photos,
-}
-            )
+        })
 
 
 class AllUserView(LoginRequiredMixin, View): #all -list
     def get(self, request):
         all = User.objects.all()
         return render(request, 'all-users.html', {"all":all})
-
-
-
 

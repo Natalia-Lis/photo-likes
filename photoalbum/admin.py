@@ -1,8 +1,5 @@
 from django.contrib import admin
-
-# Register your models here.
 from photoalbum.models import (Comment, Photo, Vote)
-
 
 
 @admin.register(Vote)
