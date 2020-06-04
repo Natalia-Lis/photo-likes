@@ -10,11 +10,16 @@ class Photo(models.Model):
     photo = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
+
+
 class Comment(models.Model):
     comment = models.TextField()
     when = models.DateTimeField(auto_now=True)
     about = models.ForeignKey(Photo, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.comment
 
 
 class Vote(models.Model):
