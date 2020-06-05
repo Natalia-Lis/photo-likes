@@ -286,3 +286,16 @@ class AllUserView(LoginRequiredMixin, View): #all -list
         all = User.objects.all()
         return render(request, 'all-users.html', {"all":all})
 
+
+class DeletePhoto(LoginRequiredMixin, View): #deletion
+    def get(self, request, id):
+        user = self.request.user
+        return render(request, 'photo_confirm_delete.html', {"user":user})
+    def post(self, request, id):
+            choice_made = request.POST.get('deletion')
+            if choice_made == 'YES':
+                delete_photo = Photo.objects.get(id=id)
+                delete_photo.delete()
+                return redirect('user-photos')
+            elif choice_made != 'YES':
+                return redirect('user-photos')

@@ -11,7 +11,8 @@
         <td>
         {{ el.creation_date }} </td>
             <td>{{ el.votes }} likes
-            </td></tr>
+            </td>
+            <td><a href="/delete-photo/{{el.id}}">usuń zdjęcie</a></td></tr>
         {% endfor %}
         </table>
     <br>

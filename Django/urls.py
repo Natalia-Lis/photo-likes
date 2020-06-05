@@ -35,4 +35,5 @@ urlpatterns = [
     path('user/<int:id>/', UserIdShowView.as_view(), name='user-id'),
     path('show-user/', ShowUserView.as_view(), name='show-user'),
     path('all-users/', AllUserView.as_view(), name='all-users'),
+    path('delete-photo/<int:id>/', DeletePhoto.as_view(), name='delete-photo'),
 ]

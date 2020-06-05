@@ -4,7 +4,9 @@ from photoalbum.models import (Comment, Photo, Vote)
 
 @admin.register(Vote)
 class VoteAdmin(admin.ModelAdmin):
-    list_display = ("like", "voting_photo")
+    list_display = ("like", "voting_photo", "voting_user_list")
+    def voting_user_list(self, obj):
+        return ", ".join([str(u) for u in obj.voting_user.all()])
 
 
 @admin.register(Photo)
