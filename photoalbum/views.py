@@ -190,11 +190,11 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
             this_photo.votes += 1
             this_photo.save()
             if z_vote.exists():
-                v1=Vote.objects.get(voting_photo_id=id)
+                v1=Vote.objects.get(voting_photo_id=id, voting_user=user)
                 v1.like=True
                 v1.save()
             else:
-                v1=Vote(voting_photo_id=id)
+                v1=Vote(voting_photo_id=id, voting_user=user)
                 v1.like=True
                 v1.save()
                 v1.voting_user.add(user)
@@ -215,11 +215,11 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
             this_photo.votes -= 1
             this_photo.save()
             if z_vote.exists():
-                v1=Vote.objects.get(voting_photo_id=id)
+                v1=Vote.objects.get(voting_photo_id=id, voting_user=user)
                 v1.like=False
                 v1.save()
             else:
-                v1=Vote(voting_photo_id=id)
+                v1=Vote(voting_photo_id=id, voting_user=user)
                 v1.like=False
                 v1.save()
                 v1.voting_user.add(user)
