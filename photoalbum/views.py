@@ -32,30 +32,30 @@ class ShowUserView(LoginRequiredMixin, View): #user zalog. info
         return render(request, 'show-user.html', {"user_info":user_info})
 
 
-class LoginView(View): #logow.
-    def get(self, request):
-        form = LoginForm()
-        return render(request, 'login.html', {'form': form})
-    def post(self, request):
-        form = LoginForm(request.POST)
-        msg = "Coś poszło nie tak. Spróbuj zalogować się ponownie"
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            user = authenticate(username=email, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('index')
-            else:
-                return render(request, 'login.html', {'msg': msg})
-        else:
-            return redirect('login')
-
-
-class LogoutView(LoginRequiredMixin, View): #wylog.
-    def get(self, request):
-        logout(request)
-        return redirect('login')
+# class LoginView(View): #logow.
+#     def get(self, request):
+#         form = LoginForm()
+#         return render(request, 'login.html', {'form': form})
+#     def post(self, request):
+#         form = LoginForm(request.POST)
+#         msg = "Coś poszło nie tak. Spróbuj zalogować się ponownie"
+#         if form.is_valid():
+#             email = form.cleaned_data['email']
+#             password = form.cleaned_data['password']
+#             user = authenticate(username=email, password=password)
+#             if user is not None:
+#                 login(request, user)
+#                 return redirect('index')
+#             else:
+#                 return render(request, 'login.html', {'msg': msg})
+#         else:
+#             return redirect('login')
+#
+#
+# class LogoutView(LoginRequiredMixin, View): #wylog.
+#     def get(self, request):
+#         logout(request)
+#         return redirect('login')
 
 
 class AddUser(View): #add

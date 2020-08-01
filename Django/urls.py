@@ -16,18 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from photoalbum.views import *
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('', IndexView.as_view(), name='index'),
-    path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    # path('login/', LoginView.as_view(), name='login'),
+    # path('logout/', LogoutView.as_view(), name='logout'),
     path('delete-user/', DeleteUser.as_view(), name='delete-user'),
     path('edit-user/', EditUserView.as_view(), name='edit-user'),
     path('show-user/', ShowUserView.as_view(), name='show-user'),
     path('password/', PasswordView.as_view(), name='password'),
     path('password-changed/', PasswordChangedView.as_view(), name='password-changed'),
-    path('add-user/', AddUser.as_view(), name='signup'),
+    path('add-user/', AddUser.as_view(), name='register'),
     path('add-photo/', AddPhotoView.as_view(), name='add-photo'),
     path('', AddPhotoView.as_view(), name='add-ph'),
     path('user-photos/', UserPhotoView.as_view(), name='user-photos'),
@@ -36,4 +37,7 @@ urlpatterns = [
     path('show-user/', ShowUserView.as_view(), name='show-user'),
     path('all-users/', AllUserView.as_view(), name='all-users'),
     path('delete-photo/<int:id>/', DeletePhoto.as_view(), name='delete-photo'),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+
 ]

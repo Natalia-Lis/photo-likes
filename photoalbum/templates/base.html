@@ -10,35 +10,38 @@
     </head>
 
     <body>
-    {% block sidebar %}
+    {% block nav %}
+ <div class="sidenav">
+    <p style="text-align: center">
 
-        <div class="sidenav">
-            <center>
-            {{zalogowany.email}}   <br>
-            {{now}}
-            <br><br><br><br>
+        {% if request.user.is_authenticated %}
+
+        Witaj {{zalogowany.email}},             {{now}}
+            <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
+        <br>
+                {% else %}
+            <a href="{% url 'login' %}">Zaloguj</a>&nbsp;&nbsp;
+            <a href="{% url 'register' %}">Załóż konto</a>
+                {% endif %}
+
             <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;
             <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;
             <a href="{% url 'user-photos' %}">Twoje zdjęcia</a>&nbsp;&nbsp;
             <a href="{% url 'add-photo' %}">Dodaj zdjęcie!</a>&nbsp;&nbsp;
             <a href="{% url 'all-users' %}">Wszyscy użytkownicy</a>&nbsp;
-            <br><br><br>
-            <a href="{% url 'login' %}">Zaloguj</a>&nbsp;&nbsp;
-            <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
-            <a href="{% url 'signup' %}">Załóż konto</a></center>
+
+            </p>
         </div>
                 {% endblock %}
     <div class="main">
         {% block content %}
-
-
+<br>
     <form action="" method="post">
         {% csrf_token %}
         {{form}}
         <input type="submit" value="send">
     </form>
-
-            <br>
+            <br><br><br>
     Wszystkie zdjęcia ({{ len_of }}):<br>
 
     {% for elem in photos %}
@@ -55,10 +58,9 @@
              </td>
         </tr>
         </table>&nbsp;
+
 {% endfor %}
-
+ </div>
         {% endblock %}
-</div>
-
     </body>
 </html>
