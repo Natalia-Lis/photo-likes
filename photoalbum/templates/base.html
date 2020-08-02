@@ -16,7 +16,7 @@
 
         {% if request.user.is_authenticated %}
 
-        Witaj {{zalogowany.email}},             {{now}}
+        Witaj {{zalogowany.email}}, {{now}} -
             <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
         <br>
                 {% else %}

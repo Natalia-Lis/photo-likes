@@ -28,7 +28,7 @@ class IndexView(LoginRequiredMixin, View): #main
 class ShowUserView(LoginRequiredMixin, View): #user zalog. info
     def get(self, request):
         user = self.request.user
-        user_info = User.objects.all().filter(email=user.email)
+        user_info = User.objects.filter(email=user.email)
         return render(request, 'show-user.html', {"user_info":user_info})
 
 
@@ -72,8 +72,8 @@ class AddUser(View): #add
             password2 = form.cleaned_data['password2']
             email = form.cleaned_data['email']
             haslo='Hasło musi być podane dwukrotnie takie samo!'
-            spr=User.objects.all().filter(email=email)
-            spr2=User.objects.all().filter(username=username)
+            spr=User.objects.filter(email=email)
+            spr2=User.objects.filter(username=username)
             already_used='Email zajęty!'
             already_used2='Nazwa użytkownika zajęta!'
             if spr:
@@ -158,11 +158,11 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
     def get(self, request, id):
         user = self.request.user
         form = AddCommentToPhotoForm()
-        komentarze = Comment.objects.all().filter(about_id=id).order_by('when')
+        komentarze = Comment.objects.filter(about_id=id).order_by('when')
         users = User.objects.all()
         this_photo = Photo.objects.get(pk=id)
-        z_vote = Vote.objects.all().filter(voting_photo_id=id).filter(voting_user=user.id)
-        moj_if = Vote.objects.all().filter(voting_photo_id=id).filter(voting_user=user.id).exists()
+        z_vote = Vote.objects.filter(voting_photo_id=id).filter(voting_user=user.id)
+        moj_if = Vote.objects.filter(voting_photo_id=id).filter(voting_user=user.id).exists()
         return render(request, 'photo-details.html', {
             'form': form,
             "komentarze": komentarze,
@@ -175,7 +175,7 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
     def post(self, request, id):
         form = AddCommentToPhotoForm(request.POST)
         user = self.request.user
-        komentarze = Comment.objects.all().filter(about_id=id)
+        komentarze = Comment.objects.filter(about_id=id)
         done = "Wykonano!"
         users = User.objects.all()
 
@@ -184,7 +184,7 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
 
         this_photo = Photo.objects.get(pk=id)
         moj_if = Vote.objects.filter(voting_user=user.id).exists()
-        z_vote = Vote.objects.all().filter(voting_photo_id=id).filter(voting_user=user.id)
+        z_vote = Vote.objects.filter(voting_photo_id=id).filter(voting_user=user.id)
 
         if like_or == 'Polub to zdjęcie!':
             this_photo.votes += 1
@@ -194,7 +194,7 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
                 v1.like=True
                 v1.save()
             else:
-                v1=Vote(voting_photo_id=id, voting_user=user)
+                v1=Vote.objects.create(voting_photo_id=id)
                 v1.like=True
                 v1.save()
                 v1.voting_user.add(user)
@@ -215,11 +215,12 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
             this_photo.votes -= 1
             this_photo.save()
             if z_vote.exists():
+                # v1=Vote.objects.get(voting_photo_id=id)
                 v1=Vote.objects.get(voting_photo_id=id, voting_user=user)
                 v1.like=False
                 v1.save()
             else:
-                v1=Vote(voting_photo_id=id, voting_user=user)
+                v1=Vote.objects.create(voting_photo_id=id)
                 v1.like=False
                 v1.save()
                 v1.voting_user.add(user)
@@ -266,13 +267,13 @@ class AddPhotoView(LoginRequiredMixin, CreateView): #add img
 class UserPhotoView(LoginRequiredMixin, View): #szczegóły z
     def get(self, request):
         user = self.request.user
-        user_photos = Photo.objects.all().filter(photo_id=user.id)
+        user_photos = Photo.objects.filter(photo_id=user.id)
         return render(request, 'user-photos.html', {"user_photos":user_photos})
 
 
 class UserIdShowView(LoginRequiredMixin, View): #received user
     def get(self, request,id):
-        this_user_photos = Photo.objects.all().filter(photo=id)
+        this_user_photos = Photo.objects.filter(photo=id)
         this_user = User.objects.get(id=id)
 
         return render(request, 'this-user.html', {
