@@ -1,4 +1,4 @@
-# w_5_pin
+#  photo-likes
 
 An application that allows users to share their photos with others. 
 It contains commenting mechanism, likes, basic account service, administration panel.
