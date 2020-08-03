@@ -82,10 +82,13 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'w_5_ins',
-        'USER': 'postgres',
-        'PASSWORD': 'coderslab',
+        'USER': 'user-from-local',
+        'PASSWORD': 'password-from-local',
     }
 }
+if os.path.isfile(os.path.join(os.path.dirname(__file__), "settings_local.py")):
+    from .settings_local import *
+    print("Local settings succesfully imported.")
 
 
 # Password validation
@@ -137,3 +140,5 @@ LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
 
 LOGOUT_URL = 'logout'
+
+LOGOUT_REDIRECT_URL = 'index'
