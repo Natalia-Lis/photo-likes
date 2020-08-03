@@ -32,32 +32,6 @@ class ShowUserView(LoginRequiredMixin, View): #user zalog. info
         return render(request, 'show-user.html', {"user_info":user_info})
 
 
-# class LoginView(View): #logow.
-#     def get(self, request):
-#         form = LoginForm()
-#         return render(request, 'login.html', {'form': form})
-#     def post(self, request):
-#         form = LoginForm(request.POST)
-#         msg = "Coś poszło nie tak. Spróbuj zalogować się ponownie"
-#         if form.is_valid():
-#             email = form.cleaned_data['email']
-#             password = form.cleaned_data['password']
-#             user = authenticate(username=email, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 return redirect('index')
-#             else:
-#                 return render(request, 'login.html', {'msg': msg})
-#         else:
-#             return redirect('login')
-#
-#
-# class LogoutView(LoginRequiredMixin, View): #wylog.
-#     def get(self, request):
-#         logout(request)
-#         return redirect('login')
-
-
 class AddUser(View): #add
     def get(self, request):
         form = AddUserForm()
@@ -178,10 +152,8 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
         komentarze = Comment.objects.filter(about_id=id)
         done = "Wykonano!"
         users = User.objects.all()
-
         photo_id = request.POST.get('photo_id')
         like_or = request.POST.get('like')
-
         this_photo = Photo.objects.get(pk=id)
         moj_if = Vote.objects.filter(voting_user=user.id).exists()
         z_vote = Vote.objects.filter(voting_photo_id=id).filter(voting_user=user.id)
@@ -199,23 +171,11 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
                 v1.save()
                 v1.voting_user.add(user)
                 v1.save()
-            # return render(request, 'photo-details.html', {
-            #     'form': form,
-            #     "komentarze": komentarze,
-            #     "done": done,
-            #     "users": users,
-            #     "this_photo":this_photo,
-            #     "z_vote":z_vote,
-            #     "user":user,
-            #     "moj_if":moj_if,
-            # })
             return redirect('photo-details', this_photo.id)
-
         elif like_or == 'Pokaż, że Ci się nie podoba':
             this_photo.votes -= 1
             this_photo.save()
             if z_vote.exists():
-                # v1=Vote.objects.get(voting_photo_id=id)
                 v1=Vote.objects.get(voting_photo_id=id, voting_user=user)
                 v1.like=False
                 v1.save()
@@ -225,31 +185,10 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
                 v1.save()
                 v1.voting_user.add(user)
                 v1.save()
-            # return render(request, 'photo-details.html', {
-            #     'form': form,
-            #     "komentarze": komentarze,
-            #     "done": done,
-            #     "users": users,
-            #     "this_photo": this_photo,
-            #     "z_vote": z_vote,
-            #     "user": user,
-            #     "moj_if": moj_if,
-            # })
             return redirect('photo-details', this_photo.id)
-
         if form.is_valid():
             comment = form.cleaned_data['comment']
             komentarz = Comment.objects.create(comment=comment, about_id=this_photo.id, author=user)
-            # return render(request, 'photo-details.html', {
-            #     'form': form,
-            #     "komentarze":komentarze,
-            #     "this_photo":this_photo,
-            #     "done": done,
-            #     "users": users,
-            #     "z_vote":z_vote,
-            #     "user": user,
-            #     "moj_if": moj_if,
-            # })
             return redirect('photo-details', this_photo.id)
 
 
