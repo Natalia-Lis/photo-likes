@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-
-
 {% block content %}
 
     <center>
@@ -9,8 +7,8 @@
         <br>
     {{ this_photo.creation_date }} <br>
         {{ this_photo.photo }}</center>
-    <br><br>{{ this_photo.votes }}<br>
-    <br>
+    <br><br>To zdjęcie ma {{ this_photo.votes }} lajków.<br>
+
     {% if moj_if == False %}
         Zagłosuj!
           <form method="post">
@@ -23,7 +21,7 @@
         {% if moj_if == True %}
         {% for ell in z_vote %}
             {% if ell.like == True %}
-                Lubisz to zdjęcie
+                (Lubisz to zdjęcie)
                 <form method="post">
                     {% csrf_token %}
                     <input type="hidden" name="photo_id" value={{ photo.id }}>
@@ -32,7 +30,7 @@
         {% endif %}
 
     {% if ell.like == False %}
-                Nie lubisz tego zdjęcia
+                (Nie lubisz tego zdjęcia)
                   <form method="post">
                     {% csrf_token %}
                     <input type="hidden" name="photo_id" value={{ photo.id }}>
@@ -42,9 +40,9 @@
         {%  endfor %}
           {% endif %}
 
-        <br><br>
+        <br>
             {{done}}
-        <br><br><br>
+        <br>
             KOMENTARZE:<br>
             {% for el in komentarze %}
             - "{{el.comment}}" -
