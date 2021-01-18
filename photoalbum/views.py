@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
-from .models import Photo, Comment, Vote
-from .forms import *
 from django.views import View
+
+from .models import Photo, Comment, Vote
+from .forms import LoginForm, AddUserForm, EditUserForm, PasswordViewForm, AddCommentToPhotoForm, AddPhotoOnMainSiteForm
 
 
 class IndexView(LoginRequiredMixin, View): #main
@@ -162,12 +163,12 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
             this_photo.votes += 1
             this_photo.save()
             if z_vote.exists():
-                v1=Vote.objects.get(voting_photo_id=id, voting_user=user)
-                v1.like=True
+                v1 = Vote.objects.get(voting_photo_id=id, voting_user=user)
+                v1.like = True
                 v1.save()
             else:
-                v1=Vote.objects.create(voting_photo_id=id)
-                v1.like=True
+                v1 = Vote.objects.create(voting_photo_id=id)
+                v1.like = True
                 v1.save()
                 v1.voting_user.add(user)
                 v1.save()
@@ -176,12 +177,12 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
             this_photo.votes -= 1
             this_photo.save()
             if z_vote.exists():
-                v1=Vote.objects.get(voting_photo_id=id, voting_user=user)
-                v1.like=False
+                v1 = Vote.objects.get(voting_photo_id=id, voting_user=user)
+                v1.like = False
                 v1.save()
             else:
-                v1=Vote.objects.create(voting_photo_id=id)
-                v1.like=False
+                v1 = Vote.objects.create(voting_photo_id=id)
+                v1.like = False
                 v1.save()
                 v1.voting_user.add(user)
                 v1.save()
