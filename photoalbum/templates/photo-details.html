@@ -2,11 +2,11 @@
 
 {% block content %}
 
-    <center>
-        <img src="{{ this_photo.path }}" width="650" height="450">
+    <center><br>
+        <img src="{{ this_photo.path }}" width="580" height="380">
         <br>
     {{ this_photo.creation_date }} <br>
-        {{ this_photo.photo }}</center>
+        {{ this_photo.photo }}
     <br><br>To zdjęcie ma {{ this_photo.votes }} lajków.<br>
 
     {% if moj_if == False %}
@@ -42,7 +42,7 @@
 
         <br>
             {{done}}
-        <br>
+        <br></center>
             KOMENTARZE:<br>
             {% for el in komentarze %}
             - "{{el.comment}}" -

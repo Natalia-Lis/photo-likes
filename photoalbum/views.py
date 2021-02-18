@@ -10,13 +10,16 @@ from .models import Photo, Comment, Vote
 from .forms import LoginForm, AddUserForm, EditUserForm, PasswordViewForm, AddCommentToPhotoForm, AddPhotoOnMainSiteForm
 
 
-class IndexView(LoginRequiredMixin, View): #main
+class IndexView(LoginRequiredMixin, View):
+
     def get(self, request):
         form = AddPhotoOnMainSiteForm()
         photos = Photo.objects.all().order_by('-creation_date')
         users = User.objects.all()
         len_of = len(photos)
-        return render(request, 'base.html', {"photos":photos, "users":users, "len_of":len_of, "form":form})
+        return render(request, 'base.html', {"photos":photos, "users":users,
+                                             "len_of":len_of, "form":form})
+
     def post(self, request):
         form = AddPhotoOnMainSiteForm(request.POST)
         user = self.request.user
@@ -27,13 +30,15 @@ class IndexView(LoginRequiredMixin, View): #main
 
 
 class ShowUserView(LoginRequiredMixin, View): #user zalog. info
+
     def get(self, request):
         user = self.request.user
         user_info = User.objects.filter(email=user.email)
         return render(request, 'show-user.html', {"user_info":user_info})
 
 
-class AddUser(View): #add
+class AddUser(View):
+
     def get(self, request):
         form = AddUserForm()
         return render(request, 'add-user.html', {'form': form})
@@ -69,12 +74,14 @@ class AddUser(View): #add
             return render(request, 'add-user.html', {"made_mistake":made_mistake, 'form': form})
 
 
-class EditUserView(LoginRequiredMixin, View): #edit
+class EditUserView(LoginRequiredMixin, View):
+
     def get(self, request):
         user = self.request.user
         user_to_change = User.objects.get(email=user.email)
         form = EditUserForm(instance=user_to_change)
         return render(request, 'edit-user.html', {"user_to_change":user_to_change, "form":form})
+
     def post(self, request):
         user = self.request.user
         user_to_change = User.objects.get(email=user.email)
@@ -88,11 +95,13 @@ class EditUserView(LoginRequiredMixin, View): #edit
 
 
 class PasswordView(LoginRequiredMixin, View): #change password
+
     def get(self, request):
         user = self.request.user
         user_to_change = User.objects.get(email=user.email)
         form = PasswordViewForm()
         return render(request, 'password.html', {"user_to_change":user_to_change, "form":form})
+
     def post(self, request):
         user = self.request.user
         user_to_change = User.objects.get(email=user.email)
@@ -105,31 +114,35 @@ class PasswordView(LoginRequiredMixin, View): #change password
                 user_to_change.save()
                 return redirect('password-changed')
             else:
-                return HttpResponse('hasło musi być podane dwukrotnie takie samo!')
+                return HttpResponse('Hasło musi być podane dwukrotnie takie samo!')
 
 
 class PasswordChangedView(View): #pass changed, needed login
+
     def get(self, request):
         changed = "Hasło zmienione. Powinieneś teraz się nim zalogować. Przejdż do strony logowania."
         return render(request, 'test.html', {"changed":changed})
 
 
-class DeleteUser(LoginRequiredMixin, View): #deletion
+class DeleteUser(LoginRequiredMixin, View):
+
     def get(self, request):
         user = self.request.user
         return render(request, 'user_confirm_delete.html', {"user":user})
+
     def post(self, request):
-            choice_made = request.POST.get('deletion')
-            if choice_made == 'YES':
-                u = self.request.user
-                user_to_delete = User.objects.get(email=u.email)
-                user_to_delete.delete()
-                return redirect('index')
-            elif choice_made != 'YES':
-                return redirect('show-user')
+        choice_made = request.POST.get('deletion')
+        if choice_made == 'YES':
+            u = self.request.user
+            user_to_delete = User.objects.get(email=u.email)
+            user_to_delete.delete()
+            return redirect('index')
+        elif choice_made != 'YES':
+            return redirect('show-user')
 
 
 class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
+
     def get(self, request, id):
         user = self.request.user
         form = AddCommentToPhotoForm()
@@ -138,15 +151,11 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
         this_photo = Photo.objects.get(pk=id)
         z_vote = Vote.objects.filter(voting_photo_id=id).filter(voting_user=user.id)
         moj_if = Vote.objects.filter(voting_photo_id=id).filter(voting_user=user.id).exists()
-        return render(request, 'photo-details.html', {
-            'form': form,
-            "komentarze": komentarze,
-            "users": users,
-            "this_photo": this_photo,
-            "z_vote":z_vote,
-            "user":user,
-            "moj_if": moj_if,
-        })
+        return render(request, 'photo-details.html', {"moj_if": moj_if, "komentarze": komentarze,
+                                                      "users": users, "this_photo": this_photo,
+                                                      "z_vote":z_vote, "user":user, 'form': form,
+                                                     })
+
     def post(self, request, id):
         form = AddCommentToPhotoForm(request.POST)
         user = self.request.user
@@ -193,9 +202,10 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
             return redirect('photo-details', this_photo.id)
 
 
-class AddPhotoView(LoginRequiredMixin, CreateView): #add img
+class AddPhotoView(LoginRequiredMixin, CreateView):
     model = Photo
     fields = ['path']
+
     def form_valid(self, form):
         user = self.request.user
         path = form.cleaned_data.get('path')
@@ -204,39 +214,42 @@ class AddPhotoView(LoginRequiredMixin, CreateView): #add img
         return redirect('/')
 
 
-class UserPhotoView(LoginRequiredMixin, View): #szczegóły z
+class UserPhotoView(LoginRequiredMixin, View):
+
     def get(self, request):
         user = self.request.user
         user_photos = Photo.objects.filter(photo_id=user.id)
         return render(request, 'user-photos.html', {"user_photos":user_photos})
 
 
-class UserIdShowView(LoginRequiredMixin, View): #received user
-    def get(self, request,id):
+class UserIdShowView(LoginRequiredMixin, View):
+
+    def get(self, request, id):
         this_user_photos = Photo.objects.filter(photo=id)
         this_user = User.objects.get(id=id)
-
-        return render(request, 'this-user.html', {
-            "this_user":this_user,
-            "this_user_photos":this_user_photos,
-        })
+        return render(request, 'this-user.html', {"this_user":this_user,
+                                                  "this_user_photos":this_user_photos,
+                                                  })
 
 
-class AllUserView(LoginRequiredMixin, View): #all -list
+class AllUserView(LoginRequiredMixin, View):
+
     def get(self, request):
         all = User.objects.all()
         return render(request, 'all-users.html', {"all":all})
 
 
-class DeletePhoto(LoginRequiredMixin, View): #deletion
+class DeletePhoto(LoginRequiredMixin, View):
+
     def get(self, request, id):
         user = self.request.user
         return render(request, 'photo_confirm_delete.html', {"user":user})
+
     def post(self, request, id):
-            choice_made = request.POST.get('deletion')
-            if choice_made == 'YES':
-                delete_photo = Photo.objects.get(id=id)
-                delete_photo.delete()
-                return redirect('user-photos')
-            elif choice_made != 'YES':
-                return redirect('user-photos')
+        choice_made = request.POST.get('deletion')
+        if choice_made == 'YES':
+            delete_photo = Photo.objects.get(id=id)
+            delete_photo.delete()
+            return redirect('user-photos')
+        elif choice_made != 'YES':
+            return redirect('user-photos')

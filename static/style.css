@@ -1,16 +1,17 @@
 body {
-    background-image: url(bg.jpg);
+    background-image: url(geo.png);
 /*    background-color: antiquewhite;*/
-    background-size: cover;
+    background-size: contain;
 /*    color: darkblue;*/
 /*    font-family: Monospaced;*/
 /*    margin-right: 20px;*/
 }
 
-/*a, a:hover, a:visited {*/
-/*    color: cornflowerblue;*/
-/*    text-decoration: none;*/
-/*}*/
+a, a:hover, a:visited {
+font-size: 24px;
+color: black;
+text-decoration: underline;
+}
 
 /*.sidenav {*/
 /*  height: 100%;*/
@@ -33,14 +34,14 @@ body {
 /*  display: block;*/
 /*}*/
 
-/*.sidenav a:hover {*/
-/*  color: darkblue;*/
-/*}*/
+.sidenav a:hover {
+color: purple;
+}
 
 .main {
 /*  margin-left: 200px;*/
 /*  margin-right: 20px;*/
-  font-size: 18px;
+  font-size: 20px;
 /*  padding: 0px 10px;*/
 }
 

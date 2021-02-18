@@ -6,7 +6,7 @@
 
 
 {% block content %}
-
+<br><br><br>
     {% for element in user_info %}
     Twój email: {{element.email}}<br>
 
@@ -30,9 +30,11 @@
         Data założenia konta: {{element.date_joined}}<br>
     {% endif %}
 
-    <br><br>
-    <a href="{% url "edit-user" %}">ZMIEŃ SWOJE DANE</a><br>
-    <a href="{% url "password" %}">ZMIEŃ HASŁO</a><br>
+    <br><br><br>
+    <a href="{% url "edit-user" %}">EDYTUJ SWOJE DANE</a><br>
+    <br>
+    <a href="{% url "password" %}">ZMIEŃ SWOJE HASŁO</a><br>
+    <br>
     <a href="{% url "delete-user" %}">usuń konto</a>
     {% endfor %}
 

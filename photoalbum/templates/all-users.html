@@ -2,15 +2,14 @@
 
 
 {% block content %}
-    <table border="1">
-        <tr>
+<br><br><br>
+Wszyscy użytkownicy - zobacz ich profil!<br>
+    <ul>
        {% for el in all %}
-        <td><a href="/user/{{el.id}}/">
-            {{ el.username }}&nbsp;</a></td>
-            <td></td>
-         </tr>
+        <a href="/user/{{el.id}}/">
+            <li>{{ el.username }}</li></a>
         {% endfor %}
-    </table>
+    </ul>
     <br>
 
 {% endblock %}

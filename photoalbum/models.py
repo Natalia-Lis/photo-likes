@@ -21,6 +21,6 @@ class Comment(models.Model):
 
 
 class Vote(models.Model):
-    like = models.NullBooleanField(null=True)
+    like = models.BooleanField(null=True)
     voting_photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
     voting_user = models.ManyToManyField(User)

@@ -11,30 +11,36 @@
 
     <body>
     {% block nav %}
- <div class="sidenav">
-    <p style="text-align: center">
+    <div class="sidenav">
+
 
         {% if request.user.is_authenticated %}
 
-        Witaj {{zalogowany.email}}, {{now}} -
-            <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;&nbsp;
+        Witaj {{zalogowany.email}}, {{now}}
+
+
         <br>
-                {% else %}
-            <a href="{% url 'login' %}">ZALOGUJ</a>&nbsp;&nbsp;
-            <a href="{% url 'register' %}">ZAŁÓŻ KONTO</a><br>
-                {% endif %}
+     <p style="text-align: center"><strong>
 
-            <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;
-            <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;
-            <a href="{% url 'user-photos' %}">Twoje zdjęcia</a>&nbsp;&nbsp;
-            <a href="{% url 'add-photo' %}">Dodaj zdjęcie!</a>&nbsp;&nbsp;
-            <a href="{% url 'all-users' %}">Wszyscy użytkownicy</a>&nbsp;
-
+         <a href="{% url 'index' %}">Strona główna</a>&nbsp;&nbsp;&nbsp;
+            <a href="{% url 'show-user' %}">Twoje dane</a>&nbsp;&nbsp;&nbsp;
+            <a href="{% url 'user-photos' %}">Twoje zdjęcia</a>&nbsp;&nbsp;&nbsp;
+            <a href="{% url 'add-photo' %}">Dodaj zdjęcie!</a>&nbsp;&nbsp;&nbsp;
+            <a href="{% url 'all-users' %}">Wszyscy użytkownicy</a>&nbsp;&nbsp;&nbsp;
+         <a href="{% url 'logout' %}">Wyloguj</a>&nbsp;
+        </strong>
             </p>
-        </div>
-                {% endblock %}
+            {% else %}
+        <a href="{% url 'login' %}"><img src="{% static 'user.png' %}" height="33">ZALOGUJ</a>&nbsp;&nbsp;
+        <a href="{% url 'register' %}"><img src="{% static 'user2.png' %}" height="33">ZAŁÓŻ KONTO</a><br>
+        <br><br><br><br>
+
+                {% endif %}
+    </div>
+            {% endblock %}
     <div class="main">
         {% block content %}
+<br>
 <br>
     <form action="" method="post">
         {% csrf_token %}
@@ -43,23 +49,25 @@
     </form>
             <br><br><br>
     Wszystkie zdjęcia ({{ len_of }}):<br>
+<br>
+           {% for elem in photos %}
+       <table border="1" style="border-collapse: collapse; float:left" width="248" height="215">
 
-    {% for elem in photos %}
-       &nbsp;<table border="1" style="float: left" width="205" height="205">
         <tr>
             <td>
             <center>
             <a href="photo-details/{{elem.id}}/">
-                <img src="{{ elem.path }}" width="170" height="170" style="float:right; margin:6px;" />
+                <img src="{{ elem.path }}" width="200" height="180" />
             </a><br>
             {{ elem.creation_date }}<br>
             <a href="user/{{elem.photo.id}}/">{{ elem.photo }}</a>
             </center>
              </td>
         </tr>
-        </table>&nbsp;
 
-{% endfor %}
+        </table>
+    {% endfor %}
+
  </div>
         {% endblock %}
     </body>

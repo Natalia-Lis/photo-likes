@@ -11,11 +11,16 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from pathlib import Path
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from django.conf.global_settings import STATICFILES_DIRS
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -80,15 +85,17 @@ WSGI_APPLICATION = 'Django.wsgi.application'
 DATABASES = {
     'default': {
         'HOST': '127.0.0.1',
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'w_5_ins',
-        'USER': 'user-from-local',
-        'PASSWORD': 'password-from-local',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'NAME': 'w_5_ins',
+        # 'USER': 'user-from-local',
+        # 'PASSWORD': 'password-from-local',
     }
 }
-if os.path.isfile(os.path.join(os.path.dirname(__file__), "settings_local.py")):
-    from .settings_local import *
-    print("Local settings succesfully imported.")
+# if os.path.isfile(os.path.join(os.path.dirname(__file__), "settings_local.py")):
+#     from .settings_local import *
+#     print("Local settings succesfully imported.")
 
 
 # Password validation
