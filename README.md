@@ -9,18 +9,18 @@ _Python 3.6, Django 3.0.7, psycopg2-binary 2.8.5_
 
 ###### Screenshots:
 ---
-<img src="photo01.jpg" width="600">
+<img src="photo01.jpg" width="700">
 
 ---
 
-<img src="photo02.png" width="600">
+<img src="photo02.png" width="700">
 
 ---
 
-<img src="photo03.png" width="600">
+<img src="photo03.png" width="700">
 
 ---
 
-<img src="photo04.png" width="600">
+<img src="photo04.png" width="700">
 
 ---
