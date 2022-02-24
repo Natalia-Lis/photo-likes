@@ -8,7 +8,7 @@ body {
 }
 
 a, a:hover, a:visited {
-font-size: 24px;
+font-size: 20px;
 color: black;
 text-decoration: underline;
 }
@@ -41,7 +41,10 @@ color: purple;
 .main {
 /*  margin-left: 200px;*/
 /*  margin-right: 20px;*/
-  font-size: 20px;
+  font-size: 22px;
 /*  padding: 0px 10px;*/
 }
 
+.sidenav {
+    font-size: 24px;
+}
