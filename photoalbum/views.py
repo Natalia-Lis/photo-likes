@@ -29,7 +29,7 @@ class IndexView(LoginRequiredMixin, View):
             return redirect('/')
 
 
-class ShowUserView(LoginRequiredMixin, View): #user zalog. info
+class ShowUserView(LoginRequiredMixin, View):
 
     def get(self, request):
         user = self.request.user
@@ -51,15 +51,15 @@ class AddUser(View):
             password = form.cleaned_data['password']
             password2 = form.cleaned_data['password2']
             email = form.cleaned_data['email']
-            haslo='Hasło musi być podane dwukrotnie takie samo!'
-            spr=User.objects.filter(email=email)
-            spr2=User.objects.filter(username=username)
-            already_used='Email zajęty!'
-            already_used2='Nazwa użytkownika zajęta!'
-            if spr:
-                return render(request, 'add-user.html', {"already_used":already_used, 'form': form})
-            elif spr2:
-                return render(request, 'add-user.html', {"already_used2":already_used2, 'form': form})
+            password_message = 'Hasło musi być podane dwukrotnie takie samo!'
+            check_if_used = User.objects.filter(email=email)
+            check_if_used_2 = User.objects.filter(username=username)
+            already_used = 'Email zajęty!'
+            already_used2 = 'Nazwa użytkownika zajęta!'
+            if check_if_used:
+                return render(request, 'add-user.html', {"already_used":already_used, 'form':form})
+            elif check_if_used_2:
+                return render(request, 'add-user.html', {"already_used2":already_used2, 'form':form})
             else:
                 if password == password2:
                     User.objects.create_user(
@@ -69,9 +69,10 @@ class AddUser(View):
                     )
                     return redirect('index')
                 else:
-                    return render(request, 'add-user.html', {"haslo":haslo, 'form': form})
+                    return render(request, 'add-user.html', {"password_message":password_message,
+                                                             'form':form})
         else:
-            return render(request, 'add-user.html', {"made_mistake":made_mistake, 'form': form})
+            return render(request, 'add-user.html', {"made_mistake":made_mistake, 'form':form})
 
 
 class EditUserView(LoginRequiredMixin, View):
@@ -87,14 +88,11 @@ class EditUserView(LoginRequiredMixin, View):
         user_to_change = User.objects.get(email=user.email)
         form = EditUserForm(request.POST, instance=user_to_change)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
             form.save()
             return redirect('show-user')
 
 
-class PasswordView(LoginRequiredMixin, View): #change password
+class PasswordView(LoginRequiredMixin, View):
 
     def get(self, request):
         user = self.request.user
@@ -146,12 +144,12 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
     def get(self, request, id):
         user = self.request.user
         form = AddCommentToPhotoForm()
-        komentarze = Comment.objects.filter(about_id=id).order_by('when')
+        comments = Comment.objects.filter(about_id=id).order_by('when')
         users = User.objects.all()
         this_photo = Photo.objects.get(pk=id)
         z_vote = Vote.objects.filter(voting_photo_id=id).filter(voting_user=user.id)
-        moj_if = Vote.objects.filter(voting_photo_id=id).filter(voting_user=user.id).exists()
-        return render(request, 'photo-details.html', {"moj_if": moj_if, "komentarze": komentarze,
+        mine_if = Vote.objects.filter(voting_photo_id=id).filter(voting_user=user.id).exists()
+        return render(request, 'photo-details.html', {"mine_if": mine_if, "comments": comments,
                                                       "users": users, "this_photo": this_photo,
                                                       "z_vote":z_vote, "user":user, 'form': form,
                                                      })
@@ -159,13 +157,13 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
     def post(self, request, id):
         form = AddCommentToPhotoForm(request.POST)
         user = self.request.user
-        komentarze = Comment.objects.filter(about_id=id)
+        comments = Comment.objects.filter(about_id=id)
         done = "Wykonano!"
         users = User.objects.all()
         photo_id = request.POST.get('photo_id')
         like_or = request.POST.get('like')
         this_photo = Photo.objects.get(pk=id)
-        moj_if = Vote.objects.filter(voting_user=user.id).exists()
+        mine_if = Vote.objects.filter(voting_user=user.id).exists()
         z_vote = Vote.objects.filter(voting_photo_id=id).filter(voting_user=user.id)
 
         if like_or == 'Polub to zdjęcie!':
@@ -198,7 +196,7 @@ class DetailsView(LoginRequiredMixin, View): #photo details, comments & votes
             return redirect('photo-details', this_photo.id)
         if form.is_valid():
             comment = form.cleaned_data['comment']
-            komentarz = Comment.objects.create(comment=comment, about_id=this_photo.id, author=user)
+            Comment.objects.create(comment=comment, about_id=this_photo.id, author=user)
             return redirect('photo-details', this_photo.id)
 
 

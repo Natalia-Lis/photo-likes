@@ -3,15 +3,19 @@
 
 {% block content %}
 <br>
+{% if user_photos %}
     Zdjęcia użytkownika {{zalogowany.username}} :
+{% else %}
+    Nie masz jeszcze żadnych zdjęć udostępnionych. Dodaj jakieś :)
+{% endif %}
     <br><br>
-        {% for el in user_photos%}
+        {% for el in user_photos %}
         <table border="1" style="border-collapse: collapse; float:left" width="600" height="192">
             <tr>
-            <td>&nbsp;<a href="/photo-details/{{el.id}}"><img src="{{ el.path }}" width="190" height="190"></a></td>
-            <td>{{ el.creation_date }}</td>
-            <td>{{ el.votes }} likes</td>
-            <td><a href="/delete-photo/{{el.id}}">usuń zdjęcie</a></td>
+                <td>&nbsp;<a href="/photo-details/{{el.id}}"><img src="{{ el.path }}" width="190" height="190"></a></td>
+                <td>{{ el.creation_date }}</td>
+                <td>{{ el.votes }} likes</td>
+                <td><a href="/delete-photo/{{el.id}}">usuń zdjęcie</a></td>
             </tr>
         </table>
         {% endfor %}

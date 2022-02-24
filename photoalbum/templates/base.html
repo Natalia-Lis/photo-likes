@@ -16,7 +16,7 @@
 
         {% if request.user.is_authenticated %}
 
-        Witaj {{zalogowany.email}}, {{now}}
+        Witaj {{logged_in.email}}, {{now}}
 
 
         <br>
@@ -31,7 +31,7 @@
         </strong>
             </p>
             {% else %}
-        <a href="{% url 'login' %}"><img src="{% static 'user.png' %}" height="33">ZALOGUJ</a>&nbsp;&nbsp;
+        <a href="{% url 'login' %}"><img src="{% static 'user.png' %}" height="33">ZALOGUJ SIĘ</a>&nbsp;&nbsp;
         <a href="{% url 'register' %}"><img src="{% static 'user2.png' %}" height="33">ZAŁÓŻ KONTO</a><br>
         <br><br><br><br>
 

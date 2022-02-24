@@ -3,15 +3,19 @@
 
 {% block content %}
     <br><br>
+{% if this_user_photos %}
     Zdjęcia użytkownika:
     {{this_user.username}}
+{% else %}
+    {{this_user.username}} nie ma jeszcze udostępnionych zdjęć :(
+{% endif %}
     <br><br>
         {% for el in this_user_photos %}
         <table border="1" style="border-collapse: collapse; float:left" width="500" height="190">
             <tr>
-            <td>&nbsp;<a href="/photo-details/{{el.id}}"><img src="{{ el.path }}" width="190" height="180"></a></td>
-            <td>{{ el.creation_date }}</td>
-            <td> {{ el.votes }} likes </td>
+                <td>&nbsp;<a href="/photo-details/{{el.id}}"><img src="{{ el.path }}" width="190" height="180"></a></td>
+                <td>{{ el.creation_date }}</td>
+                <td> {{ el.votes }} likes </td>
             </tr>
         </table>
         {% endfor %}

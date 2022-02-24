@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 
 
 def my_cp(request):
-    zalogowany = request.user
+    logged_in = request.user
     cp_ctx = {
-        "zalogowany":zalogowany,
+        "logged_in":logged_in,
         "now": date.today(),
     }
     return cp_ctx

@@ -9,7 +9,7 @@
         {{ this_photo.photo }}
     <br><br>To zdjęcie ma {{ this_photo.votes }} lajków.<br>
 
-    {% if moj_if == False %}
+    {% if mine_if == False %}
         Zagłosuj!
           <form method="post">
                     {% csrf_token %}
@@ -18,7 +18,8 @@
                     <input type="submit" name="like" value="Pokaż, że Ci się nie podoba">
                 </form>
     {% endif %}
-        {% if moj_if == True %}
+
+        {% if mine_if == True %}
         {% for ell in z_vote %}
             {% if ell.like == True %}
                 (Lubisz to zdjęcie)
@@ -43,19 +44,21 @@
         <br>
             {{done}}
         <br></center>
-            KOMENTARZE:<br>
-            {% for el in komentarze %}
+
+        KOMENTARZE:<br>
+        {% for el in comments %}
             - "{{el.comment}}" -
             {% for element in users %}
-            {% if el.author_id == element.id %}
-            {{element.username}}
-            {% endif %}
+                {% if el.author_id == element.id %}
+                    {{element.username}}
+                {% endif %}
             {% endfor %}<br>
-            {% endfor %}
-        <br>
-            <form action="" method="post">
-                {% csrf_token %}
-                {{form.as_p}}
-                <input type="submit" value="send">
-            </form>
+        {% endfor %}
+    <br>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="send">
+        </form>
+
 {% endblock %}

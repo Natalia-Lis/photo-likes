@@ -85,9 +85,9 @@ WSGI_APPLICATION = 'Django.wsgi.application'
 DATABASES = {
     'default': {
         'HOST': '127.0.0.1',
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # 'NAME': 'w_5_ins',
         # 'USER': 'user-from-local',
         # 'PASSWORD': 'password-from-local',
