@@ -9,34 +9,34 @@ _Python 3.6, Django 3.0.7, psycopg2-binary 2.8.5_
 
 ###### Screenshots:
 ---
-<img src="photo_01.jpg" width="800">
+<img src="photo_1.jpg" width="800">
 
 ---
 
-<img src="photo_02.png" width="800">
+<img src="photo_2.jpg" width="800">
 
 ---
 
-<img src="photo_02a.png" width="800">
+<img src="photo_2a.jpg" width="800">
 
 ---
 
-<img src="photo_03.png" width="800">
+<img src="photo_3.jpg" width="800">
 
 ---
 
-<img src="photo_04.png" width="800">
+<img src="photo_4.jpg" width="800">
 
 ---
 
-<img src="photo_05.png" width="800">
+<img src="photo_5.jpg" width="800">
 
 ---
 
-<img src="photo_06.png" width="800">
+<img src="photo_6.jpg" width="800">
 
 ---
 
-<img src="photo_06a.png" width="800">
+<img src="photo_6a.jpg" width="800">
 
 ---
